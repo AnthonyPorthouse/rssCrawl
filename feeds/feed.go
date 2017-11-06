@@ -62,7 +62,7 @@ func transformRSS(rss *RSSFeed) (*Feed, error) {
 func transformAtom(atom *AtomFeed) (*Feed, error) {
 	feed := Feed{
 		Title: atom.Title,
-		URL:   atom.Link,
+		URL:   atom.Link.Href,
 		Items: []FeedItem{},
 	}
 
