@@ -8,6 +8,7 @@ import (
 
 type test struct {
 	feed  []byte
+	id string
 	title string
 	link  string
 	updated time.Time
@@ -35,6 +36,7 @@ var tests = []test{
   </entry>
 
 </feed>`),
+		id: "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
 		title: "Example Feed",
 		link:  "http://example.org/",
 	},
@@ -51,13 +53,15 @@ func TestAtomFeed(t *testing.T) {
 				"Got", err,
 			)
 		}
-	}
-}
 
-func TestTitle(t *testing.T) {
-	for _, test := range tests {
-		atom := new(AtomFeed)
-		xml.Unmarshal(test.feed, atom)
+		if atom.ID != test.id {
+			t.Error(
+				"For", string(test.feed),
+				"Expected", test.id,
+				"Got", atom.ID,
+			)
+		}
+
 		if atom.Title != test.title {
 			t.Error(
 				"For", string(test.feed),
@@ -65,13 +69,7 @@ func TestTitle(t *testing.T) {
 				"Got", atom.Title,
 			)
 		}
-	}
-}
 
-func TestLink(t *testing.T) {
-	for _, test := range tests {
-		atom := new(AtomFeed)
-		xml.Unmarshal(test.feed, atom)
 		if atom.Link.Href != test.link {
 			t.Error(
 				"For", string(test.feed),
