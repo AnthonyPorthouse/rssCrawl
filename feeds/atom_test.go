@@ -11,7 +11,7 @@ type test struct {
 	id string
 	title string
 	link  string
-	updated time.Time
+	updated string
 }
 
 var tests = []test{
@@ -39,6 +39,7 @@ var tests = []test{
 		id: "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
 		title: "Example Feed",
 		link:  "http://example.org/",
+		updated: "2003-12-13T18:30:02Z",
 	},
 }
 
@@ -75,6 +76,14 @@ func TestAtomFeed(t *testing.T) {
 				"For", string(test.feed),
 				"Expected", test.link,
 				"Got", atom.Link.Href,
+			)
+		}
+
+		if atom.Updated.Format(time.RFC3339) != test.updated {
+			t.Error(
+				"For", string(test.feed),
+				"Expected", test.updated,
+				"Got", atom.Updated.Format(time.RFC3339),
 			)
 		}
 	}
