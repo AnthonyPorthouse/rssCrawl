@@ -7,10 +7,10 @@ import (
 )
 
 type test struct {
-	feed  []byte
-	id string
-	title string
-	link  string
+	feed    []byte
+	id      string
+	title   string
+	link    string
 	updated string
 }
 
@@ -36,9 +36,9 @@ var tests = []test{
   </entry>
 
 </feed>`),
-		id: "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
-		title: "Example Feed",
-		link:  "http://example.org/",
+		id:      "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
+		title:   "Example Feed",
+		link:    "http://example.org/",
 		updated: "2003-12-13T18:30:02Z",
 	},
 }
@@ -86,5 +86,28 @@ func TestAtomFeed(t *testing.T) {
 				"Got", atom.Updated.Format(time.RFC3339),
 			)
 		}
+	}
+}
+
+func TestAtomDate_UnmarshalXML(t *testing.T) {
+	feed := []byte(`<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>Example Feed</title>
+  <link href="http://example.org/"/>
+  <updated>2003-12-13</updated>
+  <author>
+    <name>John Doe</name>
+  </author>
+  <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+</feed>`)
+
+	atom := new(AtomFeed)
+	err := xml.Unmarshal(feed, atom)
+
+	if err == nil {
+		t.Error("For", string(feed),
+			"Expected", "err",
+			"Got", err)
 	}
 }

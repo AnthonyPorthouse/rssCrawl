@@ -7,8 +7,8 @@ import (
 
 type AtomFeed struct {
 	XMLName xml.Name
-	ID      string `xml:"id"`
-	Title   string `xml:"title"`
+	ID      string   `xml:"id"`
+	Title   string   `xml:"title"`
 	Link    atomLink `xml:"link"`
 	Updated atomDate `xml:"updated"`
 
@@ -17,30 +17,29 @@ type AtomFeed struct {
 
 type Entry struct {
 	XMLName xml.Name
-	ID      string `xml:"id"`
-	Title   string `xml:"title"`
-	Updated string `xml:"updated"`
-	Link    string `xml:"link"`
-	Summary string `xml:"summary"`
-	Content string `xml:"content"`
+	ID      string   `xml:"id"`
+	Title   string   `xml:"title"`
+	Updated atomDate `xml:"updated"`
+	Link    string   `xml:"link"`
+	Summary string   `xml:"summary"`
+	Content string   `xml:"content"`
 }
 
 type atomLink struct {
-	Href string `xml:"href,attr"`
-	Rel string `xml:"rel,attr"`
-	Type string `xml:"type,attr"`
+	Href     string `xml:"href,attr"`
+	Rel      string `xml:"rel,attr"`
+	Type     string `xml:"type,attr"`
 	Hreflang string `xml:"hreflang,attr"`
-	Title string `xml:"title,attr"`
-	Length string `xml:"length,attr"`
+	Title    string `xml:"title,attr"`
+	Length   string `xml:"length,attr"`
 }
 
 const (
 	LINK_ALTERNATE = "alternate"
 	LINK_ENCLOSURE = "enclosure"
-	LINK_RELATED = "related"
-	LINK_SELF = "self"
-	LINK_VIA = "via"
-
+	LINK_RELATED   = "related"
+	LINK_SELF      = "self"
+	LINK_VIA       = "via"
 )
 
 type atomDate struct {
