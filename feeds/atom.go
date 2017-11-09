@@ -7,22 +7,47 @@ import (
 
 type AtomFeed struct {
 	XMLName xml.Name
+
+	// Required
 	ID      string   `xml:"id"`
 	Title   string   `xml:"title"`
-	Link    atomLink `xml:"link"`
 	Updated atomDate `xml:"updated"`
+
+	// Recommended
+	Authors []atomPerson `xml:"author"`
+	Link    atomLink     `xml:"link"`
+
+	// Optional
+	Categories   []atomPerson `xml:"category"`
+	Contributors []string     `xml:"contributor"`
+	Generator    string       `xml:"generator"`
+	Icon         string       `xml:"icon"`
+	Logo         string       `xml:"logo"`
+	Rights       string       `xml:"rights"`
+	Subtitle     string       `xml:"subtitle"`
 
 	Entries []Entry `xml:"entry"`
 }
 
 type Entry struct {
 	XMLName xml.Name
-	ID      string     `xml:"id"`
-	Title   string     `xml:"title"`
-	Updated atomDate   `xml:"updated"`
-	Links   []atomLink `xml:"link"`
-	Summary string     `xml:"summary"`
-	Content string     `xml:"content"`
+
+	// Required
+	ID      string   `xml:"id"`
+	Title   string   `xml:"title"`
+	Updated atomDate `xml:"updated"`
+
+	// Recommended
+	Authors []atomPerson `xml:"author"`
+	Content string       `xml:"content"`
+	Links   []atomLink   `xml:"link"`
+	Summary string       `xml:"summary"`
+
+	// Optional
+	Categories   []string     `xml:"category"`
+	Contributors []atomPerson `xml:"contributor"`
+	Published    atomDate     `xml:"published"`
+	Rights       string       `xml:"rights"`
 }
 
 type atomLink struct {
@@ -32,6 +57,12 @@ type atomLink struct {
 	Hreflang string `xml:"hreflang,attr"`
 	Title    string `xml:"title,attr"`
 	Length   string `xml:"length,attr"`
+}
+
+type atomPerson struct {
+	Name  string `xml:"name"`
+	URI   string `xml:"uri"`
+	Email string `xml:"email"`
 }
 
 func (e *Entry) GetPrimaryLink() *atomLink {
