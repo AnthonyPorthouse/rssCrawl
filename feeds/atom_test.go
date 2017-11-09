@@ -7,11 +7,13 @@ import (
 )
 
 type test struct {
-	feed    []byte
-	id      string
-	title   string
-	link    string
-	updated string
+	feed        []byte
+	id          string
+	title       string
+	link        string
+	updated     string
+	entries     int
+	primaryLink string
 }
 
 var tests = []test{
@@ -40,6 +42,49 @@ var tests = []test{
 		title:   "Example Feed",
 		link:    "http://example.org/",
 		updated: "2003-12-13T18:30:02Z",
+		entries: 1,
+	},
+}
+
+var testEntries = []struct {
+	xml         []byte
+	primaryLink interface{}
+}{
+	{
+		xml: []byte(`
+			<entry>
+				<title>Atom-Powered Robots Run Amok</title>
+				<link href="http://example.org/2003/12/13/atom03"/>
+				<id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+				<updated>2003-12-13T18:30:02Z</updated>
+				<summary>Some text.</summary>
+			</entry>
+		`),
+		primaryLink: "http://example.org/2003/12/13/atom03",
+	},
+	{
+		xml: []byte(`
+			<entry>
+				<title>Atom-Powered Robots Run Amok</title>
+				<link href="http://example.org/2003/12/13/atom03"/>
+				<link rel="self" href="http://example.org/2003/12/13/atom04"/>
+				<id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+				<updated>2003-12-13T18:30:02Z</updated>
+				<summary>Some text.</summary>
+			</entry>
+		`),
+		primaryLink: "http://example.org/2003/12/13/atom04",
+	},
+	{
+		xml: []byte(`
+			<entry>
+				<title>Atom-Powered Robots Run Amok</title>
+				<id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+				<updated>2003-12-13T18:30:02Z</updated>
+				<summary>Some text.</summary>
+			</entry>
+		`),
+		primaryLink: nil,
 	},
 }
 
@@ -86,6 +131,14 @@ func TestAtomFeed(t *testing.T) {
 				"Got", atom.Updated.Format(time.RFC3339),
 			)
 		}
+
+		if len(atom.Entries) != test.entries {
+			t.Error(
+				"For", string(test.feed),
+				"Expected", test.entries,
+				"Got", len(atom.Entries),
+			)
+		}
 	}
 }
 
@@ -109,5 +162,36 @@ func TestAtomDate_UnmarshalXML(t *testing.T) {
 		t.Error("For", string(feed),
 			"Expected", "err",
 			"Got", err)
+	}
+}
+
+func TestEntry_GetPrimaryLink(t *testing.T) {
+	for _, test := range testEntries {
+		entry := new(Entry)
+		err := xml.Unmarshal(test.xml, entry)
+		if err != nil {
+			t.Error(
+				"For", string(test.xml),
+				"Expected", nil,
+				"Got", err,
+			)
+		}
+
+		if test.primaryLink == nil && entry.GetPrimaryLink() != nil {
+			t.Error(
+				"For", string(test.xml),
+				"Expected", test.primaryLink,
+				"Got", entry.GetPrimaryLink(),
+			)
+		}
+
+		if entry.GetPrimaryLink() != nil && entry.GetPrimaryLink().Href != test.primaryLink {
+			t.Error(
+				"For", string(test.xml),
+				"Expected", test.primaryLink,
+				"Got", entry.GetPrimaryLink().Href,
+			)
+		}
+
 	}
 }

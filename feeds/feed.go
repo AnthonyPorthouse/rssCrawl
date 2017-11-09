@@ -3,8 +3,9 @@ package feeds
 import (
 	"encoding/xml"
 	"errors"
-	"github.com/AnthonyPorthouse/rssCrawl/http"
 	"io/ioutil"
+
+	"github.com/AnthonyPorthouse/rssCrawl/http"
 )
 
 func GetFeed(URL string) (*Feed, error) {
@@ -69,7 +70,7 @@ func transformAtom(atom *AtomFeed) (*Feed, error) {
 	for _, item := range atom.Entries {
 		fi := FeedItem{
 			ID:      item.ID,
-			URL:     item.Link,
+			URL:     item.GetPrimaryLink().Href,
 			Content: item.Content,
 		}
 

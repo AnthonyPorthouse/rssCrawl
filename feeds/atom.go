@@ -17,12 +17,12 @@ type AtomFeed struct {
 
 type Entry struct {
 	XMLName xml.Name
-	ID      string   `xml:"id"`
-	Title   string   `xml:"title"`
-	Updated atomDate `xml:"updated"`
-	Link    string   `xml:"link"`
-	Summary string   `xml:"summary"`
-	Content string   `xml:"content"`
+	ID      string     `xml:"id"`
+	Title   string     `xml:"title"`
+	Updated atomDate   `xml:"updated"`
+	Links   []atomLink `xml:"link"`
+	Summary string     `xml:"summary"`
+	Content string     `xml:"content"`
 }
 
 type atomLink struct {
@@ -32,6 +32,21 @@ type atomLink struct {
 	Hreflang string `xml:"hreflang,attr"`
 	Title    string `xml:"title,attr"`
 	Length   string `xml:"length,attr"`
+}
+
+func (e *Entry) GetPrimaryLink() *atomLink {
+	for _, link := range e.Links {
+		switch link.Rel {
+		case LINK_SELF:
+			return &link
+		}
+	}
+
+	if len(e.Links) != 0 {
+		return &e.Links[0]
+	}
+
+	return nil
 }
 
 const (
