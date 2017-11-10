@@ -54,6 +54,17 @@ var tests = []test{
 		authors: 1,
 		entries: 1,
 	},
+	{
+		feed: []byte(`<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+  <title>Example Feed</title>
+  <updated>2003-12-13T18:30:02Z</updated>
+</feed>`),
+		id:      "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
+		title:   "Example Feed",
+		updated: "2003-12-13T18:30:02Z",
+	},
 }
 
 func TestAtomFeed(t *testing.T) {

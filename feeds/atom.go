@@ -6,48 +6,44 @@ import (
 )
 
 type AtomFeed struct {
-	XMLName xml.Name
-
 	// Required
 	ID      string   `xml:"id"`
 	Title   string   `xml:"title"`
 	Updated atomDate `xml:"updated"`
 
 	// Recommended
-	Authors []atomPerson `xml:"author"`
-	Link    atomLink     `xml:"link"`
+	Authors []atomPerson `xml:"author,omitempty"`
+	Link    atomLink     `xml:"link,omitempty"`
 
 	// Optional
-	Categories   []atomPerson `xml:"category"`
-	Contributors []string     `xml:"contributor"`
-	Generator    string       `xml:"generator"`
-	Icon         string       `xml:"icon"`
-	Logo         string       `xml:"logo"`
-	Rights       string       `xml:"rights"`
-	Subtitle     string       `xml:"subtitle"`
+	Categories   []atomPerson `xml:"category,omitempty"`
+	Contributors []string     `xml:"contributor,omitempty"`
+	Generator    string       `xml:"generator,omitempty"`
+	Icon         string       `xml:"icon,omitempty"`
+	Logo         string       `xml:"logo,omitempty"`
+	Rights       string       `xml:"rights,omitempty"`
+	Subtitle     string       `xml:"subtitle,omitempty"`
 
 	Entries []Entry `xml:"entry"`
 }
 
 type Entry struct {
-	XMLName xml.Name
-
 	// Required
 	ID      string   `xml:"id"`
 	Title   string   `xml:"title"`
 	Updated atomDate `xml:"updated"`
 
 	// Recommended
-	Authors []atomPerson `xml:"author"`
-	Content string       `xml:"content"`
-	Links   []atomLink   `xml:"link"`
-	Summary string       `xml:"summary"`
+	Authors []atomPerson `xml:"author,omitempty"`
+	Content string       `xml:"content,omitempty"`
+	Links   []atomLink   `xml:"link,omitempty"`
+	Summary string       `xml:"summary,omitempty"`
 
 	// Optional
-	Categories   []string     `xml:"category"`
-	Contributors []atomPerson `xml:"contributor"`
-	Published    atomDate     `xml:"published"`
-	Rights       string       `xml:"rights"`
+	Categories   []string     `xml:"category,omitempty"`
+	Contributors []atomPerson `xml:"contributor,omitempty"`
+	Published    atomDate     `xml:"published,omitempty"`
+	Rights       string       `xml:"rights,omitempty"`
 }
 
 type atomLink struct {
