@@ -65,21 +65,6 @@ type atomPerson struct {
 	Email string `xml:"email"`
 }
 
-func (e *Entry) GetPrimaryLink() *atomLink {
-	for _, link := range e.Links {
-		switch link.Rel {
-		case LINK_SELF:
-			return &link
-		}
-	}
-
-	if len(e.Links) != 0 {
-		return &e.Links[0]
-	}
-
-	return nil
-}
-
 const (
 	LINK_ALTERNATE = "alternate"
 	LINK_ENCLOSURE = "enclosure"

@@ -70,7 +70,7 @@ func transformAtom(atom *AtomFeed) (*Feed, error) {
 	for _, item := range atom.Entries {
 		fi := FeedItem{
 			ID:      item.ID,
-			URL:     item.GetPrimaryLink().Href,
+			URL:     item.Links[0].Href,
 			Content: item.Content,
 		}
 
