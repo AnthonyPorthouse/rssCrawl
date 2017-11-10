@@ -48,17 +48,17 @@ type Entry struct {
 
 type atomLink struct {
 	Href     string `xml:"href,attr"`
-	Rel      string `xml:"rel,attr"`
-	Type     string `xml:"type,attr"`
-	Hreflang string `xml:"hreflang,attr"`
-	Title    string `xml:"title,attr"`
-	Length   string `xml:"length,attr"`
+	Rel      string `xml:"rel,attr,omitempty"`
+	Type     string `xml:"type,attr,omitempty"`
+	Hreflang string `xml:"hreflang,attr,omitempty"`
+	Title    string `xml:"title,attr,omitempty"`
+	Length   string `xml:"length,attr,omitempty"`
 }
 
 type atomPerson struct {
-	Name  string `xml:"name"`
-	URI   string `xml:"uri"`
-	Email string `xml:"email"`
+	Name  string `xml:"name,omitempty"`
+	URI   string `xml:"uri,omitempty"`
+	Email string `xml:"email,omitempty"`
 }
 
 const (
